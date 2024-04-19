@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_seminario/lib/models/user.dart';
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend
@@ -19,11 +18,51 @@ class UserService {
 
       if (response.statusCode == 201) {
         print('Usuario creado exitosamente');
-      } else {
-        print('Error al crear usuario - Código de estado: ${response.statusCode}');
+      } else if (response.statusCode == 500) {
+        print('Error al crear usuario - Código de estado: ${response.statusCode} - Cambiar email o phone' );
+      }
+      else{
+         print('Error al crear usuario - Código de estado: ${response.statusCode}');
       }
     } catch (e) {
       print('Error al crear usuario: $e');
+
     }
   }
 }
+
+class User {
+  final String first_name;
+  final String last_name;
+  final String gender;
+  final String role;
+  final String password;
+  final String email;
+  final String phone_number;
+  final String birth_date;
+
+  User({
+    required this.first_name,
+    required this.last_name,
+    required this.gender,
+    required this.role,
+    required this.password,
+    required this.email,
+    required this.phone_number,
+    required this.birth_date,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'first_name': first_name,
+      'last_name': last_name,
+      'gender': gender,
+      'role': role,
+      'password': password,
+      'email': email,
+      'phone_number': phone_number,
+      'birth_date': birth_date,
+    };
+  }
+}
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_seminario/UserService.dart';
 
 class ParamsSection extends StatefulWidget {
   const ParamsSection({super.key});
@@ -32,6 +33,13 @@ class _ParamsSectionState extends State<ParamsSection> {
   bool _women = false;
   bool _other = false;
 
+late UserService _userService;
+
+@override
+void initState(){
+  super.initState();
+  _userService = UserService();
+}
 
   @override
   void dispose() {
@@ -57,6 +65,29 @@ class _ParamsSectionState extends State<ParamsSection> {
       _enteredPhone = _phoneController.text;
       _enteredBirthday = _birthdayController.text;
     });
+
+    User newUser = User(
+    first_name: _firstnameController.text,
+    last_name: _lastnameController.text,
+    gender: _enteredGender, // Aquí usamos el campo de género seleccionado
+    role: _roleController.text,
+    password: _passwordController.text,
+    email: _emailController.text,
+    phone_number: _phoneController.text,
+    birth_date: _enteredBirthday, // Aquí usamos la fecha de cumpleaños seleccionada
+  );
+
+
+
+_userService.createUser(newUser).then((_) {
+    // Éxito al enviar el usuario al backend, realizar acciones adicionales si es necesario
+    print('Usuario creado exitosamente');
+  }).catchError((error) {
+    // Manejar errores de solicitud HTTP
+    print('Error al enviar usuario al backend: $error');
+
+  });
+
   }
 
   @override
@@ -91,45 +122,52 @@ class _ParamsSectionState extends State<ParamsSection> {
               border: OutlineInputBorder(),
             ),
           ),
-            const Text(
-              'GENDER',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Row(
-            children: [
-              Checkbox(
-              value: _man,
-              onChanged: (bool? value) {
-                setState(() {
-                  _man = value!;
-                  _enteredGender = 'man';
-                });
-              },
-            ),
-            const Text('Man'),
-            Checkbox(
-              value: _women,
-              onChanged: (bool? value) {
-                setState(() {
-                  _women = value!;
-                  _enteredGender = 'woman';
-                });
-              },
-            ),
-            const Text('Women'),
-            Checkbox(
-              value: _other,
-              onChanged: (bool? value) {
-                setState(() {
-                  _other = value!;
-                  _enteredGender = 'other';
+            // const Text(
+            //   'GENDER',
+            //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            // ),
+            // Row(
+            // children: [
+            //   Checkbox(
+            //   value: _man,
+            //   onChanged: (bool? value) {
+            //     setState(() {
+            //       _man = value!;
+            //       _enteredGender = 'man';
+            //     });
+            //   },
+            // ),
+            // const Text('Man'),
+            // Checkbox(
+            //   value: _women,
+            //   onChanged: (bool? value) {
+            //     setState(() {
+            //       _women = value!;
+            //       _enteredGender = 'woman';
+            //     });
+            //   },
+            // ),
+            // const Text('Women'),
+            // Checkbox(
+            //   value: _other,
+            //   onChanged: (bool? value) {
+            //     setState(() {
+            //       _other = value!;
+            //       _enteredGender = 'other';
 
-                });
-              },
+            //     });
+            //   },
+            // ),
+            // const Text('Other'),
+            // ],
+            TextField(
+            controller: _genderController,
+            decoration: const InputDecoration(
+              hintText: 'Gender',
+              border: OutlineInputBorder(),
             ),
-            const Text('Other'),
-            ],
           ),
+          //),
           TextField(
             controller: _roleController,
             decoration: const InputDecoration(

@@ -32,14 +32,7 @@ class TitleSection extends StatelessWidget {
               ],
             ),
           ),
-          /*3*/
-          // #docregion Icon
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
           // #enddocregion Icon
-          const Text('41'),
         ],
       ),
     );
