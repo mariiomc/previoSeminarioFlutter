@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_seminario/UserService.dart';
+import 'package:email_validator/email_validator.dart';
+
 
 class ParamsSection extends StatefulWidget {
   const ParamsSection({super.key});
+
 
   @override
   // ignore: library_private_types_in_public_api
@@ -35,6 +38,14 @@ class _ParamsSectionState extends State<ParamsSection> {
 
 late UserService _userService;
 
+bool isValidEmail(String email) {
+   if (!EmailValidator.validate(email)) {
+     return false;
+   }
+   return true;
+ }
+
+
 @override
 void initState(){
   super.initState();
@@ -55,6 +66,8 @@ void initState(){
   }
 
   void _showEnteredParams() {
+    
+    //if(validateEmail(_enteredEmail) == null){
     setState(() {
       _enteredFirstName = _firstnameController.text;
       _enteredLastName = _lastnameController.text;
@@ -65,7 +78,8 @@ void initState(){
       _enteredPhone = _phoneController.text;
       _enteredBirthday = _birthdayController.text;
     });
-
+    
+    if(isValidEmail(_enteredEmail)==true){
     User newUser = User(
     first_name: _firstnameController.text,
     last_name: _lastnameController.text,
@@ -87,13 +101,17 @@ _userService.createUser(newUser).then((_) {
     print('Error al enviar usuario al backend: $error');
 
   });
-
+    }
+    else{
+      print('Introduce un email válido');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0), 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -175,7 +193,7 @@ _userService.createUser(newUser).then((_) {
               border: OutlineInputBorder(),
             ),
           ),
-           TextField(
+           TextFormField(
             controller: _emailController,
             decoration: const InputDecoration(
               hintText: 'Email',
@@ -244,4 +262,5 @@ _userService.createUser(newUser).then((_) {
       ),
     );
   }
+  
 }
