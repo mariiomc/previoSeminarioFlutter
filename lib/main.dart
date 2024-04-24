@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_seminario/login_screen.dart';
+import 'package:flutter_seminario/pallete.dart';
 import 'package:flutter_seminario/params.dart';
 import 'package:flutter_seminario/title.dart';
 
@@ -12,25 +14,10 @@ class MyApp extends StatelessWidget {
     const String appTitle = 'Seminario Flutter';
     return MaterialApp(
       title: appTitle,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(appTitle),
-        ),
-        // #docregion addWidget
-        body: const SingleChildScrollView(
-          child: Column(
-            children: [
-              TitleSection(
-                name: 'Añadir Usuario',
-              ),
-              //Sección de introducir parámetros
-              ParamsSection(),
-              //Sección de botón de enviar
-            ],
-          ),
-        ),
-        // #enddocregion addWidget
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Pallete.backgroundColor,
       ),
+      home: LoginScreen(),
     );
   }
 }

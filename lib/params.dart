@@ -36,21 +36,21 @@ class _ParamsSectionState extends State<ParamsSection> {
   bool _women = false;
   bool _other = false;
 
-late UserService _userService;
+  late UserService _userService;
 
-bool isValidEmail(String email) {
-   if (!EmailValidator.validate(email)) {
-     return false;
-   }
-   return true;
- }
+  bool isValidEmail(String email) {
+    if (!EmailValidator.validate(email)) {
+      return false;
+    }
+    return true;
+  }
 
 
-@override
-void initState(){
-  super.initState();
-  _userService = UserService();
-}
+  @override
+  void initState(){
+    super.initState();
+    _userService = UserService();
+  }
 
   @override
   void dispose() {
@@ -66,7 +66,7 @@ void initState(){
   }
 
   void _showEnteredParams() {
-    
+      
     //if(validateEmail(_enteredEmail) == null){
     setState(() {
       _enteredFirstName = _firstnameController.text;
@@ -89,178 +89,178 @@ void initState(){
     email: _emailController.text,
     phone_number: _phoneController.text,
     birth_date: _enteredBirthday, // Aquí usamos la fecha de cumpleaños seleccionada
-  );
-
-
-
-_userService.createUser(newUser).then((_) {
-    // Éxito al enviar el usuario al backend, realizar acciones adicionales si es necesario
-    print('Usuario creado exitosamente');
-  }).catchError((error) {
-    // Manejar errores de solicitud HTTP
-    print('Error al enviar usuario al backend: $error');
-
-  });
-    }
-    else{
-      print('Introduce un email válido');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    
-    return Padding(
-      padding: const EdgeInsets.all(16.0), 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Ingrese los parámetros para crear un usuario:',
-            style: TextStyle(fontSize: 16),
-          ),
-          TextField(
-            controller: _firstnameController,
-            decoration: const InputDecoration(
-              hintText: 'First Name',
-              border: OutlineInputBorder(),
-            ),
-          ),
-           TextField(
-            controller: _lastnameController,
-            decoration: const InputDecoration(
-              hintText: 'Last Name',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          TextField(
-            controller: _passwordController,
-            decoration: const InputDecoration(
-              hintText: 'Contraseña',
-              border: OutlineInputBorder(),
-            ),
-          ),
-            // const Text(
-            //   'GENDER',
-            //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            // ),
-            // Row(
-            // children: [
-            //   Checkbox(
-            //   value: _man,
-            //   onChanged: (bool? value) {
-            //     setState(() {
-            //       _man = value!;
-            //       _enteredGender = 'man';
-            //     });
-            //   },
-            // ),
-            // const Text('Man'),
-            // Checkbox(
-            //   value: _women,
-            //   onChanged: (bool? value) {
-            //     setState(() {
-            //       _women = value!;
-            //       _enteredGender = 'woman';
-            //     });
-            //   },
-            // ),
-            // const Text('Women'),
-            // Checkbox(
-            //   value: _other,
-            //   onChanged: (bool? value) {
-            //     setState(() {
-            //       _other = value!;
-            //       _enteredGender = 'other';
-
-            //     });
-            //   },
-            // ),
-            // const Text('Other'),
-            // ],
-            TextField(
-            controller: _genderController,
-            decoration: const InputDecoration(
-              hintText: 'Gender',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          //),
-          TextField(
-            controller: _roleController,
-            decoration: const InputDecoration(
-              hintText: 'Role',
-              border: OutlineInputBorder(),
-            ),
-          ),
-           TextFormField(
-            controller: _emailController,
-            decoration: const InputDecoration(
-              hintText: 'Email',
-              border: OutlineInputBorder(),
-            ),
-          ),
-           TextField(
-            controller: _phoneController,
-            decoration: const InputDecoration(
-              hintText: 'Phone',
-              border: OutlineInputBorder(),
-            ),
-          ),
-           TextField(
-            controller: _birthdayController,
-            decoration: const InputDecoration(
-              hintText: 'Birthday',
-              border: OutlineInputBorder(),
-            ),
-          ),
-
-          
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: _showEnteredParams,
-            child: const Text('Mostrar parámetros'),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Parámetros introducidos: ',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            'First Name: $_enteredFirstName',
-            style: const TextStyle(fontSize: 15),
-          ),
-           Text(
-            'Last Name: $_enteredLastName',
-            style: const TextStyle(fontSize: 15),
-          ),
-           Text(
-            'Gender: $_enteredGender',
-            style: const TextStyle(fontSize: 15),
-          ),
-          Text(
-            'Role: $_enteredRole',
-            style: const TextStyle(fontSize: 15),
-          ),
-           Text(
-            'Contraseña: $_enteredPassword',
-            style: const TextStyle(fontSize: 15),
-          ),
-          Text(
-            'Email: $_enteredEmail',
-            style: const TextStyle(fontSize: 15),
-          ),
-          Text(
-            'Phone: $_enteredPhone',
-            style: const TextStyle(fontSize: 15),
-          ),
-          Text(
-            'Birthday: $_enteredBirthday',
-            style: const TextStyle(fontSize: 15),
-          ),
-        ],
-      ),
     );
-  }
+
+
+
+    _userService.createUser(newUser).then((_) {
+        // Éxito al enviar el usuario al backend, realizar acciones adicionales si es necesario
+        print('Usuario creado exitosamente');
+      }).catchError((error) {
+        // Manejar errores de solicitud HTTP
+        print('Error al enviar usuario al backend: $error');
+
+      });
+      }
+      else{
+        print('Introduce un email válido');
+      }
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      
+      return Padding(
+        padding: const EdgeInsets.all(16.0), 
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Ingrese los parámetros para crear un usuario:',
+              style: TextStyle(fontSize: 16),
+            ),
+            TextField(
+              controller: _firstnameController,
+              decoration: const InputDecoration(
+                hintText: 'First Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            TextField(
+              controller: _lastnameController,
+              decoration: const InputDecoration(
+                hintText: 'Last Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(
+                hintText: 'Contraseña',
+                border: OutlineInputBorder(),
+              ),
+            ),
+              // const Text(
+              //   'GENDER',
+              //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              // ),
+              // Row(
+              // children: [
+              //   Checkbox(
+              //   value: _man,
+              //   onChanged: (bool? value) {
+              //     setState(() {
+              //       _man = value!;
+              //       _enteredGender = 'man';
+              //     });
+              //   },
+              // ),
+              // const Text('Man'),
+              // Checkbox(
+              //   value: _women,
+              //   onChanged: (bool? value) {
+              //     setState(() {
+              //       _women = value!;
+              //       _enteredGender = 'woman';
+              //     });
+              //   },
+              // ),
+              // const Text('Women'),
+              // Checkbox(
+              //   value: _other,
+              //   onChanged: (bool? value) {
+              //     setState(() {
+              //       _other = value!;
+              //       _enteredGender = 'other';
+
+              //     });
+              //   },
+              // ),
+              // const Text('Other'),
+              // ],
+              TextField(
+              controller: _genderController,
+              decoration: const InputDecoration(
+                hintText: 'Gender',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            //),
+            TextField(
+              controller: _roleController,
+              decoration: const InputDecoration(
+                hintText: 'Role',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            TextFormField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                hintText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            TextField(
+              controller: _phoneController,
+              decoration: const InputDecoration(
+                hintText: 'Phone',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            TextField(
+              controller: _birthdayController,
+              decoration: const InputDecoration(
+                hintText: 'Birthday',
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _showEnteredParams,
+              child: const Text('Mostrar parámetros'),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Parámetros introducidos: ',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'First Name: $_enteredFirstName',
+              style: const TextStyle(fontSize: 15),
+            ),
+            Text(
+              'Last Name: $_enteredLastName',
+              style: const TextStyle(fontSize: 15),
+            ),
+            Text(
+              'Gender: $_enteredGender',
+              style: const TextStyle(fontSize: 15),
+            ),
+            Text(
+              'Role: $_enteredRole',
+              style: const TextStyle(fontSize: 15),
+            ),
+            Text(
+              'Contraseña: $_enteredPassword',
+              style: const TextStyle(fontSize: 15),
+            ),
+            Text(
+              'Email: $_enteredEmail',
+              style: const TextStyle(fontSize: 15),
+            ),
+            Text(
+              'Phone: $_enteredPhone',
+              style: const TextStyle(fontSize: 15),
+            ),
+            Text(
+              'Birthday: $_enteredBirthday',
+              style: const TextStyle(fontSize: 15),
+            ),
+          ],
+        ),
+      );
+    }
   
 }
