@@ -1,47 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_seminario/button_sign_in.dart';
 import 'package:flutter_seminario/paramTextBox.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter_seminario/UserService.dart';
 import 'package:flutter_seminario/pallete.dart';
+import 'package:get/get.dart';
 
-class LoginScreen extends StatefulWidget {
+late UserService userService;
+
+class RegisterScreen extends StatefulWidget {
+  RegisterScreen({Key? key}) : super(key: key);
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreen createState() => _RegisterScreen();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  // Create a text controller to retrieve the text from the custom text box.
-  final TextEditingController nombreController = TextEditingController();
-  final TextEditingController apellidoController = TextEditingController();
-  final TextEditingController generoController = TextEditingController();
-  final TextEditingController rolController = TextEditingController();
-  final TextEditingController contrasenaController = TextEditingController();
-  final TextEditingController mailController = TextEditingController();
-  final TextEditingController telController = TextEditingController();
-  final TextEditingController cumpleController = TextEditingController();
-  late UserService userService;
-  bool invalid = false;
-
+class _RegisterScreen extends State<RegisterScreen> {
+  final RegisterScreenController controller = Get.put(RegisterScreenController());
 
   @override
-    void initState(){
+  void initState(){
     super.initState();
     userService = UserService();
-  }
-
-  @override
-  void dispose() {
-    // Dispose of the controllers when the widget is removed from the widget tree.
-    nombreController.dispose();
-    apellidoController.dispose();
-    generoController.dispose();
-    rolController.dispose();
-    contrasenaController.dispose();
-    mailController.dispose();
-    telController.dispose();
-    cumpleController.dispose();
-    super.dispose();
   }
 
   @override 
@@ -62,74 +41,89 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                ParamTextBox(controller: nombreController, text: 'Nombre'),
+                ParamTextBox(controller: controller.nombreController, text: 'Nombre'),
                 const SizedBox(height: 15),
-                ParamTextBox(controller: apellidoController, text: 'Apellido'),
+                ParamTextBox(controller: controller.apellidoController, text: 'Apellido'),
                 const SizedBox(height: 15),
-                ParamTextBox(controller: generoController, text: 'Genero'),
+                ParamTextBox(controller: controller.generoController, text: 'Genero'),
                 const SizedBox(height: 15),
-                ParamTextBox(controller: rolController, text: 'Rol'),
+                ParamTextBox(controller: controller.rolController, text: 'Rol'),
                 const SizedBox(height: 15),
-                ParamTextBox(controller: contrasenaController, text: 'Contraseña'),
+                ParamTextBox(controller: controller.contrasenaController, text: 'Contraseña'),
                 const SizedBox(height: 15),
-                ParamTextBox(controller: mailController, text: 'e-mail'),
+                ParamTextBox(controller: controller.mailController, text: 'e-mail'),
                 Visibility(
-                  visible: invalid,
+                  visible: controller.invalid,
                   child: const Text(
                     'Invalid',
                     style: TextStyle(color: Pallete.salmonColor, fontSize: 15),
                   ),
                 ),
                 const SizedBox(height: 15),
-                ParamTextBox(controller: telController, text: 'Telefono'),
+                ParamTextBox(controller: controller.telController, text: 'Telefono'),
                 const SizedBox(height: 15),
-                ParamTextBox(controller: cumpleController, text: 'Cupleaños'),
+                ParamTextBox(controller: controller.cumpleController, text: 'Cupleaños'),
                 const SizedBox(height: 40),
                 //Sección de introducir parámetros
                 //ParamsSection(),
                 //Sección de botón de enviar
-                SignInButton(onPressedCallback: onButtonPressed),
+                SignInButton(controller: controller),
               ],
             ),
           )
         ),
     );
   }
+}
 
-  bool isValidEmail(String email) {
-   if (!EmailValidator.validate(email)) {
-    return false;
-  }
-    return true;
-  }
+class RegisterScreenController extends GetxController {
+  final TextEditingController nombreController = TextEditingController();
+  final TextEditingController apellidoController = TextEditingController();
+  final TextEditingController generoController = TextEditingController();
+  final TextEditingController rolController = TextEditingController();
+  final TextEditingController contrasenaController = TextEditingController();
+  final TextEditingController mailController = TextEditingController();
+  final TextEditingController telController = TextEditingController();
+  final TextEditingController cumpleController = TextEditingController();
 
-  void onButtonPressed() {
+  bool invalid = false;
+
+  void signUp() {
     String mail = mailController.text;
-    if(isValidEmail(mail)==true){
-
-      User newUser = User(
-      first_name: nombreController.text,
-      last_name: apellidoController.text,
-      gender: generoController.text,
-      role: rolController.text,
-      password: contrasenaController.text,
-      email: mailController.text,
-      phone_number: telController.text,
-      birth_date: cumpleController.text,
+    if(nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || 
+    nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty){
+      Get.snackbar(
+        'Error', 
+        'Faltan por rellenar campos',
+        snackPosition: SnackPosition.BOTTOM,
       );
-
-      userService.createUser(newUser).then((_) {
-      // Éxito al enviar el usuario al backend, realizar acciones adicionales si es necesario
-        print('Usuario creado exitosamente');
-      }).catchError((error) {
-      // Manejar errores de solicitud HTTP
-      print('Error al enviar usuario al backend: $error');
-      });
     }
     else{
-      setState(() {
-      invalid = true;
-      });
+      if(GetUtils.isEmail(mail)==true){
+        User newUser = User(
+          first_name: nombreController.text,
+          last_name: apellidoController.text,
+          gender: generoController.text,
+          role: rolController.text,
+          password: contrasenaController.text,
+          email: mailController.text,
+          phone_number: telController.text,
+          birth_date: cumpleController.text,
+        );
+
+        userService.createUser(newUser).then((_) {
+        }).catchError((error) {
+          // Manejar errores de solicitud HTTP
+          print('Error al enviar usuario al backend: $error');
+        });
+      }
+      else{
+        Get.snackbar(
+          'Error', 
+          'e-mail no valido',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     }
   }
 }
