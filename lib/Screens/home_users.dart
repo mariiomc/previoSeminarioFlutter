@@ -4,24 +4,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_seminario/Screens/home_page.dart';
+import 'package:flutter_seminario/Screens/detalles_user.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' ;
 
 
-class User {
-  final String id;
-  final String name;
-  
-
-  User({required this.id, required this.name});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['_id'],
-      name: json['first_name'],
-    );
-  }
-}
 
 class UserListPage extends StatefulWidget {
   @override
@@ -29,40 +17,28 @@ class UserListPage extends StatefulWidget {
 }
 
 class _UserListPageState extends State<UserListPage> {
-  late Future<List<User>> _futureUsers;
-
+ 
+  var lista_users;
   @override
   void initState() {
     super.initState();
     
-    _futureUsers= fetchUsers();
+    getData();
   }
 
-  Future<List<User>> fetchUsers() async {
-    final response =
-        await http.get(Uri.parse('http://127.0.0.1:3000/users'),headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          //'Access-Control-Allow-Origin': '*',
-        },);
+  void getData() async{
+    try{
+      var res= await Dio().get('http://127.0.0.1:3000/users');
+      setState(() {
+        lista_users =res.data as List;
+      });
+      if(lista_users.statusCode==200){
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      print(data.map((json) => User.fromJson(json)).toList());
-      List<User> users = data.map((userData) {
-      return User(
-        id: userData['_id'],
-        name: userData['first_name'],
-      );
-    }).toList();
-      print(users[0].id);
-      print(users[0].name);
-      print(users[1].id);
-      print(users[1].name);
-      print(users[2].id);
-      print(users[2].name);
-      return users;
-    } else {
-      throw Exception('Failed to load users');
+      }else{
+        print(lista_users.statusCode);
+      }
+    }catch(e){
+      print(e);
     }
   }
 
@@ -84,37 +60,31 @@ class _UserListPageState extends State<UserListPage> {
             ),
         ),
       ),
-      body: Column(
-        children: [
-          
-          FutureBuilder<List<User>>(
-          future: _futureUsers,
-          builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              
-              itemBuilder: (context, index) {
-                final user = snapshot.data![index];
-                return ListTile(
-                  title: Text(user.name),
-                  // Puedes agregar más información del usuario aquí si es necesario
-                );
-              },
-            );
-          }
+      body: ListView.builder(
+        itemBuilder: (BuildContext context , int index ){
+          return Card(
+            child: ListTile(
+              title: Text(lista_users[index]['first_name']),
+              subtitle: Text(lista_users[index]['last_name']),
+              onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserDetailsPage(user: lista_users[index]),
+                ),
+              );
+            },
+            ),
+            
+          );
           
         },
-        ),
-      ],
+
+        itemCount: lista_users == null?0:lista_users.length,
         
         
-      ),
-      
+        )
+    
     );
   }
 }

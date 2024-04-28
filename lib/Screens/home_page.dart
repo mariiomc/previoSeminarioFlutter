@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _nameState extends State<HomePage> {
-  int _selectedIndex=0;
+  int _selectedIndex = 0;
 
  /*  void navigationBar(int index){
     setState(() {
