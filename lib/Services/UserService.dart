@@ -1,74 +1,56 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
+import 'package:flutter_seminario/Screens/home_users.dart';
+import 'package:get/get.dart';
+import 'package:flutter_seminario/Models/UserModel.dart';
+import 'package:dio/dio.dart' as Dio; // Usa un prefijo 'Dio' para importar la clase Response desde Dio
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend
-  final dio = Dio();
+  final Dio.Dio dio = Dio.Dio(); // Usa el prefijo 'Dio' para referenciar la clase Dio
 
+var statusCode;
+var data;
 //Función createUser
-Future<void> createUser(User newUser)async{
+Future<int> createUser(User newUser)async{
     print('createUser');
-    try{
-      print('try');
-      
-      //Aquí llamamos a la función request
-       await request(newUser);
-     
-    }
-    catch(e){
-      print('Error al crear usuario: $e');
+        print('try');
+        //Aquí llamamos a la función request
+        print('request');
+        // Utilizar Dio para enviar la solicitud POST a http://127.0.0.1:3000/users
+        Dio.Response response = await dio.post('$baseUrl/users', data: newUser.toJson());
+        //En response guardamos lo que recibimos como respuesta
+        //Printeamos los datos recibidos
+
+        data = response.data.toString();
+        print('Data: $data');
+        //Printeamos el status code recibido por el backend
+
+        statusCode = response.statusCode;
+        print('Status code: $statusCode');
+
+        if (statusCode == 201) {
+      // Si el usuario se crea correctamente, retornamos el código 201
+          print('201');
+          return 201;
+        } else if (statusCode == 400) {
+          // Si hay campos faltantes, retornamos el código 400
+                print('400');
+
+          return 400;
+        } else if (statusCode == 500) {
+          // Si hay un error interno del servidor, retornamos el código 500
+                print('500');
+
+          return 500;
+        } else {
+          // Otro caso no manejado
+                print('-1');
+
+          return -1;
+        }
+ 
     }
   }
 
-//Función request (manda la petición al backend)
-  Future<void> request(User newUser) async {
-    try {
-      print('request');
-      // Utilizar Dio para enviar la solicitud POST a http://127.0.0.1:3000/users
-      Response response = await dio.post('$baseUrl/users', data: newUser.toJson());
-      //En response guardamos lo que recibimos como respuesta
-      //Printeamos los datos recibidos
-      print(response.data.toString());
-      //Printeamos el status code recibido por el backend
-      print(response.statusCode);
-    } catch (e) {
-      print('Error en la solicitud: $e');
-    }
-  }
-}
 
-class User {
-  final String first_name;
-  final String last_name;
-  final String gender;
-  final String role;
-  final String password;
-  final String email;
-  final String phone_number;
-  final String birth_date;
-
-  User({
-    required this.first_name,
-    required this.last_name,
-    required this.gender,
-    required this.role,
-    required this.password,
-    required this.email,
-    required this.phone_number,
-    required this.birth_date,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'first_name': first_name,
-      'last_name': last_name,
-      'gender': gender,
-      'role': role,
-      'password': password,
-      'email': email,
-      'phone_number': phone_number,
-      'birth_date': birth_date,
-    };
-  }
-}
 

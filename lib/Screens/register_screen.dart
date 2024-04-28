@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_seminario/Models/UserModel.dart';
+import 'package:flutter_seminario/Screens/home_users.dart';
 import 'package:flutter_seminario/Widgets/button_sign_in.dart';
 import 'package:flutter_seminario/Widgets/paramTextBox.dart';
 import 'package:flutter_seminario/Services/UserService.dart';
@@ -41,17 +43,19 @@ class _RegisterScreen extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 40),
+              
+              const SizedBox(height: 15),
               ParamTextBox(controller: controller.nombreController, text: 'Nombre'),
               const SizedBox(height: 15),
               ParamTextBox(controller: controller.apellidoController, text: 'Apellido'),
               const SizedBox(height: 15),
-              ParamTextBox(controller: controller.generoController, text: 'Genero'),
+              ParamTextBox(controller: controller.generoController, text: 'Género'),
               const SizedBox(height: 15),
               ParamTextBox(controller: controller.rolController, text: 'Rol'),
               const SizedBox(height: 15),
               ParamTextBox(controller: controller.contrasenaController, text: 'Contraseña'),
               const SizedBox(height: 15),
-              ParamTextBox(controller: controller.mailController, text: 'e-mail'),
+              ParamTextBox(controller: controller.mailController, text: 'E-Mail'),
               Visibility(
                 visible: controller.invalid,
                 child: const Text(
@@ -60,10 +64,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                 ),
               ),
               const SizedBox(height: 15),
-              ParamTextBox(controller: controller.telController, text: 'Telefono'),
+              ParamTextBox(controller: controller.telController, text: 'Teléfono'),
               const SizedBox(height: 15),
-              ParamTextBox(controller: controller.cumpleController, text: 'Cupleaños'),
+              ParamTextBox(controller: controller.cumpleController, text: 'Cumpleaños'),
+              
               const SizedBox(height: 40),
+
               //Sección de introducir parámetros
               //ParamsSection(),
               //Sección de botón de enviar
@@ -87,6 +93,7 @@ class RegisterScreenController extends GetxController {
   final TextEditingController cumpleController = TextEditingController();
 
   bool invalid = false;
+  bool parameters = false;
 
   void signUp() {
     if(nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || 
@@ -109,10 +116,22 @@ class RegisterScreenController extends GetxController {
           phone_number: telController.text,
           birth_date: cumpleController.text,
         );
-
-        userService.createUser(newUser).then((_) {
+        userService.createUser(newUser).then((statusCode) {
+              // La solicitud se completó exitosamente, puedes realizar acciones adicionales si es necesario
+              print('Usuario creado exitosamente');
+              Get.snackbar(
+                '¡Usuario Creado!', 
+                'Usuario creado correctamente',
+                snackPosition: SnackPosition.BOTTOM,
+              );
+              Get.to(() => UserListPage());
         }).catchError((error) {
           // Manejar errores de solicitud HTTP
+          Get.snackbar(
+            'Error', 
+            'Este E-Mail o Teléfono ya están en uso actualmente.',
+            snackPosition: SnackPosition.BOTTOM,
+          );
           print('Error al enviar usuario al backend: $error');
         });
       }
