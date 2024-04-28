@@ -1,32 +1,38 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend
+  final dio = Dio();
 
-  Future<void> createUser(User newUser) async {
-    final url = Uri.parse('$baseUrl/users'); // URL para crear un nuevo usuario
-
-    try {
-      final response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(newUser.toJson()), // Convertir el objeto User a JSON
-      );
-
-      if (response.statusCode == 201) {
-        print('Usuario creado exitosamente');
-      } else if (response.statusCode == 500) {
-        print('Error al crear usuario - Código de estado: ${response.statusCode} - Cambiar email o phone' );
-      }
-      else{
-         print('Error al crear usuario - Código de estado: ${response.statusCode}');
-      }
-    } catch (e) {
+//Función createUser
+Future<void> createUser(User newUser)async{
+    print('createUser');
+    try{
+      print('try');
+      
+      //Aquí llamamos a la función request
+       await request(newUser);
+     
+    }
+    catch(e){
       print('Error al crear usuario: $e');
+    }
+  }
 
+//Función request (manda la petición al backend)
+  Future<void> request(User newUser) async {
+    try {
+      print('request');
+      // Utilizar Dio para enviar la solicitud POST a http://127.0.0.1:3000/users
+      Response response = await dio.post('$baseUrl/users', data: newUser.toJson());
+      //En response guardamos lo que recibimos como respuesta
+      //Printeamos los datos recibidos
+      print(response.data.toString());
+      //Printeamos el status code recibido por el backend
+      print(response.statusCode);
+    } catch (e) {
+      print('Error en la solicitud: $e');
     }
   }
 }
