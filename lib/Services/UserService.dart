@@ -3,6 +3,8 @@ import 'package:flutter_seminario/Models/PlaceModel.dart';
 import 'package:flutter_seminario/Screens/home_users.dart';
 import 'package:flutter_seminario/Models/UserModel.dart';
 import 'package:dio/dio.dart'; // Usa un prefijo 'Dio' para importar la clase Response desde Dio
+import 'package:get_storage/get_storage.dart';
+
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend
@@ -10,6 +12,7 @@ class UserService {
 
 var statusCode;
 var data;
+var token;
 //Función createUser
 Future<int> createUser(User newUser)async{
     print('createUser');
@@ -22,6 +25,7 @@ Future<int> createUser(User newUser)async{
         //Printeamos los datos recibidos
 
         data = response.data.toString();
+        
         print('Data: $data');
         //Printeamos el status code recibido por el backend
 
