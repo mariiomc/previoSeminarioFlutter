@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_seminario/Models/PlaceModel.dart';
 import 'package:flutter_seminario/Screens/home_users.dart';
 import 'package:get/get.dart';
 import 'package:flutter_seminario/Models/UserModel.dart';
@@ -50,6 +51,19 @@ Future<int> createUser(User newUser)async{
         }
  
     }
+
+
+   Future<List<Place>> getData() async {
+  print('getData');
+  var res = await dio.get('$baseUrl/place');
+  List<dynamic> responseData = res.data; // Obtener los datos de la respuesta
+  
+  // Convertir los datos en una lista de objetos Place
+  List<Place> places = responseData.map((data) => Place.fromJson(data)).toList();
+  
+  return places; // Devolver la lista de lugares
+}
+
   }
 
 

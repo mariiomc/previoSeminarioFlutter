@@ -3,88 +3,88 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_seminario/Models/PlaceModel.dart';
 import 'package:flutter_seminario/Screens/home_page.dart';
 import 'package:flutter_seminario/Screens/detalles_user.dart';
+import 'package:flutter_seminario/Widgets/post.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' ;
+import 'package:flutter_seminario/Services/UserService.dart';
 
+late UserService userService;
 
 
 class UserListPage extends StatefulWidget {
+    UserListPage({Key? key}) : super(key: key);
+
   @override
-  _UserListPageState createState() => _UserListPageState();
+  _UserListPage createState() => _UserListPage();
 }
 
-class _UserListPageState extends State<UserListPage> {
- 
-  var lista_users;
+class _UserListPage extends State<UserListPage> {
+  late List<Place> lista_users;
+
+  bool isLoading = true; // Nuevo estado para indicar si se están cargando los datos
+
   @override
   void initState() {
     super.initState();
-    
+    userService = UserService();
     getData();
   }
 
-  void getData() async{
-    try{
-      var res= await Dio().get('http://127.0.0.1:3000/users');
+  void getData() async {
+    try {
+      lista_users = await userService.getData();
       setState(() {
-        lista_users =res.data as List;
+        isLoading = false; // Cambiar el estado de carga cuando los datos están disponibles
       });
-      if(lista_users.statusCode==200){
-
-      }else{
-        print(lista_users.statusCode);
-      }
-    }catch(e){
-      print(e);
+    } catch (error) {
+      Get.snackbar(
+        'Error',
+        'No se han podido obtener los datos.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      print('Error al comunicarse con el backend: $error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text('User List',),),
-        elevation: 0,
-        leading: Builder(
-          builder: (context) =>IconButton(
-          icon: Icon(
-            Icons.turn_left,
-            color: Colors.black,
+    if (isLoading) {
+      // Muestra un indicador de carga mientras se cargan los datos
+      return Center(child: CircularProgressIndicator());
+    } else {
+      // Muestra la lista de usuarios cuando los datos están disponibles
+      return Scaffold(
+        appBar: AppBar(
+          title: Center(child: Text('Places List')),
+          elevation: 0,
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(
+                Icons.turn_left,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Get.to(HomePage());
+              },
             ),
-            onPressed: (){
-              Get.to(HomePage());
-            },
-            ),
+          ),
         ),
-      ),
-      body: ListView.builder(
-        itemBuilder: (BuildContext context , int index ){
-          return Card(
-            child: ListTile(
-              title: Text(lista_users[index]['first_name']),
-              subtitle: Text(lista_users[index]['last_name']),
-              onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserDetailsPage(user: lista_users[index]),
-                ),
-              );
-            },
-            ),
-            
-          );
-          
-        },
-
-        itemCount: lista_users == null?0:lista_users.length,
-        
-        
-        )
-    
-    );
+        body: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              child:
+                PostWidget(place: lista_users[index]),
+            );
+          },
+          itemCount: lista_users.length,
+        ),
+      );
+    }
   }
 }
+
+  

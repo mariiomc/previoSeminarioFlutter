@@ -85,12 +85,12 @@ class _nameState extends State<HomePage> {
               padding: EdgeInsets.only(left:25.0),
               child: ListTile(
                 leading: Icon(
-                  Icons.account_circle_outlined,
+                  Icons.flood_outlined,
                   color: Colors.white,
 
                 ),
                 title: Text(
-                'Users',
+                'Places',
                 style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
@@ -102,7 +102,7 @@ class _nameState extends State<HomePage> {
               padding: EdgeInsets.only(left:25.0),
               child: ListTile(
                 leading: Icon(
-                  Icons.flood_outlined,
+                  Icons.book,
                   color: Colors.white,
 
                 ),
