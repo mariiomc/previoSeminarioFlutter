@@ -12,7 +12,16 @@ class UserService {
 
 var statusCode;
 var data;
-var token;
+
+void saveToken(String token){
+  final box = GetStorage();
+  box.write('token', token);
+}
+
+String? getToken(){
+  final box = GetStorage();
+  return box.read('token');
+}
 //Función createUser
 Future<int> createUser(User newUser)async{
     print('createUser');
@@ -25,8 +34,49 @@ Future<int> createUser(User newUser)async{
         //Printeamos los datos recibidos
 
         data = response.data.toString();
-        
         print('Data: $data');
+        //Printeamos el status code recibido por el backend
+
+        statusCode = response.statusCode;
+        print('Status code: $statusCode');
+
+        if (statusCode == 201) {
+      // Si el usuario se crea correctamente, retornamos el código 201
+          print('201');
+          return 201;
+        } else if (statusCode == 400) {
+          // Si hay campos faltantes, retornamos el código 400
+                print('400');
+
+          return 400;
+        } else if (statusCode == 500) {
+          // Si hay un error interno del servidor, retornamos el código 500
+                print('500');
+
+          return 500;
+        } else {
+          // Otro caso no manejado
+                print('-1');
+
+          return -1;
+        }
+ 
+    }
+    Future<int> logIn(email, password)async{
+    print('iniciar sesion');
+        print('try');
+        //Aquí llamamos a la función request
+        print('request');
+        // Utilizar Dio para enviar la solicitud POST a http://127.0.0.1:3000/users
+        Response response = await dio.post('$baseUrl/login', data: {email,password});
+        //En response guardamos lo que recibimos como respuesta
+        //Printeamos los datos recibidos
+
+        data = response.data.toString();
+        var token= response.data.token;
+        saveToken(token);
+
+        print('Data: $token');
         //Printeamos el status code recibido por el backend
 
         statusCode = response.statusCode;
@@ -58,7 +108,25 @@ Future<int> createUser(User newUser)async{
 
    Future<List<Place>> getData() async {
   print('getData');
-  var res = await dio.get('$baseUrl/place');
+  
+  
+   
+
+    // Interceptor para agregar el token a la cabecera de autorización
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) {
+        // Obtener el token guardado
+        final token = getToken();
+        
+        // Si el token está disponible, agregarlo a la cabecera 'authority'
+        if (token != null) {
+          options.headers['authority'] = token;
+        }
+        
+        return handler.next(options);
+      },
+    ));
+    var res = await dio.get('$baseUrl/place');
   List<dynamic> responseData = res.data; // Obtener los datos de la respuesta
   
   // Convertir los datos en una lista de objetos Place

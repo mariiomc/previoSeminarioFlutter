@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_seminario/Screens/home_users.dart';
 import 'package:flutter_seminario/Resources/pallete.dart';
 import 'package:flutter_seminario/Screens/register_screen.dart';
+import 'package:flutter_seminario/Screens/login_screen.dart';
+
 import 'package:get/get.dart';
 
 
@@ -111,6 +113,7 @@ class _nameState extends State<HomePage> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
+                  Get.to(() =>LoginScreen());
                 },
               ),
             ),

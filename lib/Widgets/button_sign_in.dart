@@ -3,7 +3,7 @@ import 'package:flutter_seminario/Screens/register_screen.dart';
 import 'package:flutter_seminario/Resources/pallete.dart';
 
 class SignInButton extends StatelessWidget {
-  final RegisterScreenController controller;
+  final dynamic controller;
   const SignInButton({Key? key, required this.controller}) : super(key: key);
 
   @override 
