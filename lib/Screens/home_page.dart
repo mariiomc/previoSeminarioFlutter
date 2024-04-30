@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_seminario/Screens/home_users.dart';
 import 'package:flutter_seminario/Resources/pallete.dart';
 import 'package:flutter_seminario/Screens/register_screen.dart';
+import 'package:flutter_seminario/Screens/login_screen.dart';
+
 import 'package:get/get.dart';
 
 
@@ -85,12 +87,12 @@ class _nameState extends State<HomePage> {
               padding: EdgeInsets.only(left:25.0),
               child: ListTile(
                 leading: Icon(
-                  Icons.account_circle_outlined,
+                  Icons.flood_outlined,
                   color: Colors.white,
 
                 ),
                 title: Text(
-                'Users',
+                'Places',
                 style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
@@ -102,7 +104,7 @@ class _nameState extends State<HomePage> {
               padding: EdgeInsets.only(left:25.0),
               child: ListTile(
                 leading: Icon(
-                  Icons.flood_outlined,
+                  Icons.book,
                   color: Colors.white,
 
                 ),
@@ -111,6 +113,7 @@ class _nameState extends State<HomePage> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
+                  Get.to(() =>LoginScreen());
                 },
               ),
             ),

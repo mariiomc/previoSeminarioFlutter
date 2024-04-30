@@ -66,10 +66,25 @@ class _RegisterScreen extends State<RegisterScreen> {
               const SizedBox(height: 15),
               ParamTextBox(controller: controller.telController, text: 'Teléfono'),
               const SizedBox(height: 15),
+<<<<<<< HEAD
               ParamTextBox(controller: controller.cumpleController, text: 'Cumpleaños'),
               const SizedBox(height: 40),
               SignInButton(onPressed: () => controller.signUp(), text: 'Register'),
               const SizedBox(height: 40),
+=======
+              ElevatedButton(
+                onPressed: () => controller.selectDate(context),
+                child: Text('Seleccionar Fecha de Nacimiento'),
+              ),
+              const SizedBox(height: 15),
+              // Mostrar la fecha seleccionada
+              Text('Fecha de Nacimiento: ${controller.cumpleController.text}'),
+              const SizedBox(height: 40),
+              //Sección de introducir parámetros
+              //ParamsSection(),
+              //Sección de botón de enviar
+              SignInButton(controller: controller),
+>>>>>>> fb235762ccdfa3b401c09dacb4e284433893c810
             ],
           ),
         )
@@ -90,6 +105,19 @@ class RegisterScreenController extends GetxController {
 
   bool invalid = false;
   bool parameters = false;
+
+Future<void> selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate != null) {
+      cumpleController.text = pickedDate.toString(); // Actualizar el controlador de texto con la fecha seleccionada
+    }
+  }
+
 
   void signUp() {
     if(nombreController.text.isEmpty || apellidoController.text.isEmpty || generoController.text.isEmpty || rolController.text.isEmpty || contrasenaController.text.isEmpty || 
