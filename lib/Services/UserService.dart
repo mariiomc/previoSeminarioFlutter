@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_seminario/Models/PlaceModel.dart';
 import 'package:flutter_seminario/Screens/home_users.dart';
-import 'package:get/get.dart';
 import 'package:flutter_seminario/Models/UserModel.dart';
-import 'package:dio/dio.dart' as Dio; // Usa un prefijo 'Dio' para importar la clase Response desde Dio
+import 'package:dio/dio.dart'; // Usa un prefijo 'Dio' para importar la clase Response desde Dio
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000"; // URL de tu backend
-  final Dio.Dio dio = Dio.Dio(); // Usa el prefijo 'Dio' para referenciar la clase Dio
+  final Dio dio = Dio(); // Usa el prefijo 'Dio' para referenciar la clase Dio
 
 var statusCode;
 var data;
@@ -18,7 +17,7 @@ Future<int> createUser(User newUser)async{
         //Aquí llamamos a la función request
         print('request');
         // Utilizar Dio para enviar la solicitud POST a http://127.0.0.1:3000/users
-        Dio.Response response = await dio.post('$baseUrl/users', data: newUser.toJson());
+        Response response = await dio.post('$baseUrl/users', data: newUser.toJson());
         //En response guardamos lo que recibimos como respuesta
         //Printeamos los datos recibidos
 
