@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_seminario/Screens/home_page.dart';
 import 'package:flutter_seminario/Resources/pallete.dart';
+import 'package:flutter_seminario/Screens/login_screen.dart';
 import 'package:get/get.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  Get.put(GlobalController());
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,8 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Pallete.backgroundColor,
       ),
-      home: HomePage(),
+      home: LoginScreen(),
     );
   }
+}
+
+class GlobalController extends GetxController {
+  RxString token = "".obs;
 }
 

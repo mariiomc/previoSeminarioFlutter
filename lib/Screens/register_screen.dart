@@ -67,13 +67,9 @@ class _RegisterScreen extends State<RegisterScreen> {
               ParamTextBox(controller: controller.telController, text: 'Teléfono'),
               const SizedBox(height: 15),
               ParamTextBox(controller: controller.cumpleController, text: 'Cumpleaños'),
-              
               const SizedBox(height: 40),
-
-              //Sección de introducir parámetros
-              //ParamsSection(),
-              //Sección de botón de enviar
-              SignInButton(controller: controller),
+              SignInButton(onPressed: () => controller.signUp(), text: 'Register'),
+              const SizedBox(height: 40),
             ],
           ),
         )
@@ -96,8 +92,8 @@ class RegisterScreenController extends GetxController {
   bool parameters = false;
 
   void signUp() {
-    if(nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty || 
-    nombreController.text.isEmpty || nombreController.text.isEmpty || nombreController.text.isEmpty){
+    if(nombreController.text.isEmpty || apellidoController.text.isEmpty || generoController.text.isEmpty || rolController.text.isEmpty || contrasenaController.text.isEmpty || 
+    mailController.text.isEmpty || telController.text.isEmpty || cumpleController.text.isEmpty){
       Get.snackbar(
         'Error', 
         'Campos vacios',
@@ -117,14 +113,14 @@ class RegisterScreenController extends GetxController {
           birth_date: cumpleController.text,
         );
         userService.createUser(newUser).then((statusCode) {
-              // La solicitud se completó exitosamente, puedes realizar acciones adicionales si es necesario
-              print('Usuario creado exitosamente');
-              Get.snackbar(
-                '¡Usuario Creado!', 
-                'Usuario creado correctamente',
-                snackPosition: SnackPosition.BOTTOM,
-              );
-              Get.to(() => UserListPage());
+          // La solicitud se completó exitosamente, puedes realizar acciones adicionales si es necesario
+          print('Usuario creado exitosamente');
+          Get.snackbar(
+            '¡Usuario Creado!', 
+            'Usuario creado correctamente',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+          Get.to(() => UserListPage());
         }).catchError((error) {
           // Manejar errores de solicitud HTTP
           Get.snackbar(
