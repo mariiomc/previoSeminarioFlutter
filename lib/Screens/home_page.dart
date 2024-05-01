@@ -109,7 +109,7 @@ class _nameState extends State<HomePage> {
 
                 ),
                 title: Text(
-                  'Posts',
+                  'Log In',
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {

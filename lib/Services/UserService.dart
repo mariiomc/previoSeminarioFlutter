@@ -63,22 +63,24 @@ class UserService {
   }
 
   Future<List<Place>> getData() async {
-    print('getData');
-    // Interceptor para agregar el token a la cabecera de autorización
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        // Obtener el token guardado
-        final token = getToken();
+  print('getData');
+  // Interceptor para agregar el token a la cabecera 'x-access-token'
+  dio.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) async {
+      // Obtener el token guardado
+      final token = getToken();
 
-        print(token);
-        
-        // Si el token está disponible, agregarlo a la cabecera 'authority'
-        if (token != null) {
-          options.headers['authority'] = token;
-        }
-        return handler.next(options);
-      },
-    ));
+      print(token);
+      
+      // Si el token está disponible, agregarlo a la cabecera 'x-access-token'
+      if (token != null) {
+        options.headers['x-access-token'] = token;
+      }
+      return handler.next(options);
+    },
+  ));
+  
+  try {
     var res = await dio.get('$baseUrl/place');
     List<dynamic> responseData = res.data; // Obtener los datos de la respuesta
   
@@ -86,7 +88,13 @@ class UserService {
     List<Place> places = responseData.map((data) => Place.fromJson(data)).toList();
   
     return places; // Devolver la lista de lugares
+  } catch (e) {
+    // Manejar cualquier error que pueda ocurrir durante la solicitud
+    print('Error fetching data: $e');
+    throw e; // Relanzar el error para que el llamador pueda manejarlo
   }
+}
+
 
   Future<int> logIn(logIn)async{
     print('LogIn');

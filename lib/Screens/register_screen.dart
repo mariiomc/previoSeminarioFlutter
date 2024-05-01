@@ -75,7 +75,6 @@ class _RegisterScreen extends State<RegisterScreen> {
               ),
               const SizedBox(height: 15),
               // Mostrar la fecha seleccionada
-              Text('Fecha de Nacimiento: ${controller.cumpleController.text}'),
               const SizedBox(height: 15),
               SignInButton(onPressed: () => controller.signUp(), text: 'Register'),
               const SizedBox(height: 40),
