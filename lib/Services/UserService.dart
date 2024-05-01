@@ -12,7 +12,6 @@ class UserService {
   final Dio dio = Dio(); // Usa el prefijo 'Dio' para referenciar la clase Dio
   var statusCode;
   var data;
-  var token;
 
   void saveToken(String token){
     final box = GetStorage();
@@ -70,12 +69,13 @@ class UserService {
       onRequest: (options, handler) {
         // Obtener el token guardado
         final token = getToken();
+
+        print(token);
         
         // Si el token está disponible, agregarlo a la cabecera 'authority'
         if (token != null) {
           options.headers['authority'] = token;
         }
-        
         return handler.next(options);
       },
     ));
@@ -107,7 +107,7 @@ class UserService {
 
     if (statusCode == 200) {
       // Si el usuario se crea correctamente, retornamos el código 201
-      token = data;
+      saveToken(data);
       print('200');
       return 201;
     } else if (statusCode == 400) {
