@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_seminario/Models/UserModel.dart';
+import 'package:flutter_seminario/Screens/home_page.dart';
 import 'package:flutter_seminario/Screens/home_users.dart';
 import 'package:flutter_seminario/Widgets/button_sign_in.dart';
 import 'package:flutter_seminario/Widgets/paramTextBox.dart';
@@ -66,12 +67,8 @@ class _RegisterScreen extends State<RegisterScreen> {
               const SizedBox(height: 15),
               ParamTextBox(controller: controller.telController, text: 'Teléfono'),
               const SizedBox(height: 15),
-<<<<<<< HEAD
               ParamTextBox(controller: controller.cumpleController, text: 'Cumpleaños'),
               const SizedBox(height: 40),
-              SignInButton(onPressed: () => controller.signUp(), text: 'Register'),
-              const SizedBox(height: 40),
-=======
               ElevatedButton(
                 onPressed: () => controller.selectDate(context),
                 child: Text('Seleccionar Fecha de Nacimiento'),
@@ -79,12 +76,9 @@ class _RegisterScreen extends State<RegisterScreen> {
               const SizedBox(height: 15),
               // Mostrar la fecha seleccionada
               Text('Fecha de Nacimiento: ${controller.cumpleController.text}'),
+              const SizedBox(height: 15),
+              SignInButton(onPressed: () => controller.signUp(), text: 'Register'),
               const SizedBox(height: 40),
-              //Sección de introducir parámetros
-              //ParamsSection(),
-              //Sección de botón de enviar
-              SignInButton(controller: controller),
->>>>>>> fb235762ccdfa3b401c09dacb4e284433893c810
             ],
           ),
         )
@@ -148,7 +142,7 @@ Future<void> selectDate(BuildContext context) async {
             'Usuario creado correctamente',
             snackPosition: SnackPosition.BOTTOM,
           );
-          Get.to(() => UserListPage());
+          Get.to(() => HomePage());
         }).catchError((error) {
           // Manejar errores de solicitud HTTP
           Get.snackbar(

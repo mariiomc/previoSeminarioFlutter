@@ -10,7 +10,7 @@ class TitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return const Padding(
       padding:  EdgeInsets.all(32),
       child: Row(
         children: [
